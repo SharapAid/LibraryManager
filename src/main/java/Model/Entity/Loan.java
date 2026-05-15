@@ -1,14 +1,14 @@
 package Model.Entity;
 
-public class LeaseRecord {
+public class Loan {
     private int bookId;
     private int index;
     private int clientId;
     private String dateIssued;
 
-    public LeaseRecord(){}
+    public Loan(){}
 
-    public LeaseRecord(int bookId, int clientId, String dateIssued, int index){
+    public Loan(int bookId, int clientId, String dateIssued, int index){
         this.bookId = bookId;
         this.clientId = clientId;
         this.dateIssued = dateIssued;
