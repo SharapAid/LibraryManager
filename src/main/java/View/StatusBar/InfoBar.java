@@ -1,4 +1,4 @@
-package Test.AppElements.StatusBar;
+package View.StatusBar;
 
 import javax.swing.*;
 import java.awt.*;

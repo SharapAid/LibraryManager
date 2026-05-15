@@ -1,6 +1,6 @@
-package Test.AppElements.ToolBar;
+package View.ToolBar;
 
-import Test.AppElements.CustomElements.RoundTextField;
+import View.CustomElements.RoundTextField;
 
 import javax.swing.*;
 import java.awt.*;

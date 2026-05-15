@@ -1,6 +1,6 @@
-package Test.AppElements.ToolBar;
+package View.ToolBar;
 
-import Test.AppElements.CustomElements.CustomButton;
+import View.CustomElements.CustomButton;
 
 import javax.swing.*;
 import java.awt.*;

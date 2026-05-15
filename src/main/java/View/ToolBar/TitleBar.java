@@ -1,4 +1,4 @@
-package Test.AppElements.ToolBar;
+package View.ToolBar;
 
 import javax.swing.*;
 import java.awt.*;
