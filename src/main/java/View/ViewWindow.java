@@ -21,8 +21,9 @@ public class ViewWindow{
         window = new JFrame(nameApp);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        window.setLayout(new BorderLayout());
         window.setLocationRelativeTo(null);
+        window.setLayout(new BorderLayout());
+
 
         sideBar = new SideBar();
         toolBar = new ToolBar();

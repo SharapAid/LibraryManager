@@ -6,7 +6,6 @@ import View.ModelTable.BooksModel;
 import View.ViewWindow;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 public class BooksTable {
@@ -30,6 +29,33 @@ public class BooksTable {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List books")) {
                 loadBooksToTable();
                 System.out.println("Books table refreshed!");
+            }
+        });
+
+        view.getToolBar().getButtonBar().getAddButton().addActionListener(e -> {
+            if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List books")) {
+
+                View.Forms.BookForm form = new View.Forms.BookForm(view.getWindow());
+
+                form.getSaveButton().addActionListener(ev -> {
+
+                    String title = form.getBookTitle();
+                    String author = form.getBookAuthor();
+                    String genre = form.getBookGenre();
+
+                    if (!title.isEmpty() && !author.isEmpty() && !genre.isEmpty()) {
+                        Book newBook = new Book(title, author, genre, true, 0);
+                        bookDAO.insert(newBook);
+
+                        form.getWrapForm().dispose();
+
+                        loadBooksToTable();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(form.getWrapForm(), "Please fill all fields!", "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
+                });
+                form.getWrapForm().setVisible(true);
             }
         });
     }

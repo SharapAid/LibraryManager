@@ -5,6 +5,7 @@ import Model.Entity.Client;
 import View.ModelTable.ClientsModel;
 import View.ViewWindow;
 
+import javax.swing.*;
 import java.util.List;
 
 public class ClientsTable {
@@ -28,6 +29,32 @@ public class ClientsTable {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List clients")) {
                 loadClientsToTable();
                 System.out.println("Clients table refreshed!");
+            }
+        });
+
+        view.getToolBar().getButtonBar().getAddButton().addActionListener(e -> {
+            if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List clients")) {
+
+                View.Forms.ClientForm form = new View.Forms.ClientForm(view.getWindow());
+
+                form.getSaveButton().addActionListener(ev -> {
+                    String name = form.getClientName();
+                    String phone = form.getClientPhone();
+                    String email = form.getClientEmail();
+                    String address = form.getClientAddress();
+
+                    if (!name.isEmpty() && !phone.isEmpty()) {
+                        Client newClient = new Client(name, phone, email, address, 0);
+                        clientDAO.insert(newClient);
+
+                        form.getWrapForm().dispose();
+                        loadClientsToTable();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(form.getWrapForm(), "Name and Phone fields are required!", "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
+                });
+                form.getWrapForm().setVisible(true);
             }
         });
     }
