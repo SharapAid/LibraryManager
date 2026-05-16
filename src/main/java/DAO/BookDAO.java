@@ -94,4 +94,20 @@ public class BookDAO {
         }
     }
 
+    public static Book getById(int id) {
+        String sql = "SELECT * FROM books WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Book(
+                            rs.getString("title"), rs.getString("author"),
+                            rs.getString("genre"), rs.getBoolean("status"), rs.getInt("id")
+                    );
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return null;
+    }
 }

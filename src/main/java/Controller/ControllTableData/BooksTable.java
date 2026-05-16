@@ -6,6 +6,10 @@ import View.CustomElements.CustomAlert;
 import View.ModelTable.BooksModel;
 import View.ViewWindow;
 
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumnModel;
+import java.awt.Component;
+
 import javax.swing.*;
 import java.util.List;
 
@@ -71,5 +75,6 @@ public class BooksTable {
             });
         }
         view.getDataTable().getTable().setModel(model.getModel());
+        CustomTableDisplay.customizeTableDisplay(view.getDataTable().getTable());
     }
 }

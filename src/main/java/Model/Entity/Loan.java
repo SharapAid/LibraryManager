@@ -5,13 +5,15 @@ public class Loan {
     private int index;
     private int clientId;
     private String dateIssued;
+    private String dateReturned;
 
     public Loan(){}
 
-    public Loan(int bookId, int clientId, String dateIssued, int index){
+    public Loan(int bookId, int clientId, String dateIssued, String dateReturned, int index){
         this.bookId = bookId;
         this.clientId = clientId;
         this.dateIssued = dateIssued;
+        this.dateReturned = dateReturned;
         this.index = index;
     }
 
@@ -31,6 +33,10 @@ public class Loan {
         return dateIssued;
     }
 
+    public String getDateReturned() {
+        return dateReturned;
+    }
+
     public void setBookId(int bookId) {
         this.bookId = bookId;
     }
@@ -43,4 +49,7 @@ public class Loan {
         this.dateIssued = dateIssued;
     }
 
+    public void setDateReturned(String dateReturned) {
+        this.dateReturned = dateReturned;
+    }
 }

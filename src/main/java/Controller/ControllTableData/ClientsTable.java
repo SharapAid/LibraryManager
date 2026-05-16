@@ -69,6 +69,8 @@ public class ClientsTable {
                     c.getIndex(), c.getName(), c.getPhone(), c.getEmail(), c.getAddress()
             });
         }
+
         view.getDataTable().getTable().setModel(model.getModel());
+        CustomTableDisplay.customizeTableDisplay(view.getDataTable().getTable());
     }
 }

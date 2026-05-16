@@ -43,6 +43,7 @@ public class DataBaseManager {
                     book_id INTEGER,
                     client_id INTEGER,
                     loan_date TEXT,
+                    date_returned,
                     FOREIGN KEY (book_id) REFERENCES books(id),
                     FOREIGN KEY (client_id) REFERENCES clients(id)
                 );

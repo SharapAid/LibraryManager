@@ -5,6 +5,11 @@ import Controller.ControllTableData.ClientsTable;
 import Controller.ControllTableData.LoansTable;
 import View.ViewWindow;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumnModel;
+import java.awt.*;
+
 public class LibraryController {
     private BooksTable booksModel;
     private ClientsTable clientsModel;

@@ -5,9 +5,14 @@ import DAO.ClientDAO;
 import DAO.LoanDAO;
 import Model.Entity.Book;
 import Model.Entity.Client;
+import Model.Entity.Loan;
+import View.CustomElements.CustomAlert;
 import View.Forms.LoanForm;
 import View.ModelTable.LoansModel;
 import View.ViewWindow;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class LoansTable {
@@ -37,15 +42,15 @@ public class LoansTable {
         view.getToolBar().getButtonBar().getAddButton().addActionListener(e -> {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List loans")) {
 
-                List<Model.Entity.Book> availableBooks = BookDAO.getAllAvailable();
-                List<Model.Entity.Client> allClients = ClientDAO.getAll();
+                List<Book> availableBooks = BookDAO.getAllAvailable();
+                List<Client> allClients = ClientDAO.getAll();
 
                 if (availableBooks.isEmpty()) {
-                    View.CustomElements.CustomAlert.showWarning(view.getWindow(), "No books available for loan!");
+                    CustomAlert.showWarning(view.getWindow(), "No books available for loan!");
                     return;
                 }
                 if (allClients.isEmpty()) {
-                    View.CustomElements.CustomAlert.showWarning(view.getWindow(), "No registered clients found!");
+                    CustomAlert.showWarning(view.getWindow(), "No registered clients found!");
                     return;
                 }
 
@@ -57,10 +62,11 @@ public class LoansTable {
                     String loanDate = form.getLoanDate();
 
                     if (selectedBook != null && selectedClient != null && !loanDate.isEmpty()) {
-                        Model.Entity.Loan newLoan = new Model.Entity.Loan(
+                        Loan newLoan = new Loan(
                                 selectedBook.getIndex(),
                                 selectedClient.getIndex(),
                                 loanDate,
+                                null,
                                 0
                         );
                         loanDAO.insert(newLoan);
@@ -71,11 +77,36 @@ public class LoansTable {
                         form.getWrapForm().dispose();
                         loadLoansToTable();
                     } else {
-                        View.CustomElements.CustomAlert.showWarning(form.getWrapForm(), "Please check all fields!");
+                        CustomAlert.showWarning(form.getWrapForm(), "Please check all fields!");
                     }
                 });
                 form.getWrapForm().setVisible(true);
             }
+        });
+
+        view.getToolBar().getButtonBar().getDeleteButton().addActionListener(e -> {
+            if (!view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List loans")) {
+                return;
+            }
+
+            int selectedRow = view.getDataTable().getTable().getSelectedRow();
+            if (selectedRow == -1) {
+                CustomAlert.showWarning(view.getWindow(), "Select a loan from the table!");
+                return;
+            }
+
+            String dateReturned = view.getDataTable().getTable().getValueAt(selectedRow, 3).toString();
+            if (!dateReturned.equals("Not returned")) {
+                CustomAlert.showWarning(view.getWindow(), "This book has already been returned!");
+                return;
+            }
+
+            String bookTitle = view.getDataTable().getTable().getValueAt(selectedRow, 0).toString();
+
+            String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LoanDAO.returnBookByTitle(bookTitle, currentDate);
+
+            loadLoansToTable();
         });
     }
 
@@ -88,5 +119,6 @@ public class LoansTable {
         }
 
         view.getDataTable().getTable().setModel(model.getModel());
+        CustomTableDisplay.customizeTableDisplay(view.getDataTable().getTable());
     }
 }
