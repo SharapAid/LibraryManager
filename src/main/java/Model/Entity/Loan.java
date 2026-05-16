@@ -42,4 +42,5 @@ public class Loan {
     public void setDateIssued(String dateIssued) {
         this.dateIssued = dateIssued;
     }
+
 }

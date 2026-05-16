@@ -1,5 +1,6 @@
 package DAO;
 
+import Model.Entity.Book;
 import Model.Entity.Loan;
 import java.sql.*;
 import java.util.ArrayList;

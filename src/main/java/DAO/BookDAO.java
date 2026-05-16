@@ -18,7 +18,10 @@ public class BookDAO {
             pstmt.setString(2, book.getAuthor());
             pstmt.setString(3, book.getGenre());
             pstmt.executeUpdate();
-        } catch (SQLException e) { e.printStackTrace(); }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static List<Book> getAll() {
@@ -39,10 +42,56 @@ public class BookDAO {
                 );
                 books.add(book);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
         return books;
+    }
+
+    public static List<Book> getAllAvailable() {
+        List<Book> availableBooks = new ArrayList<>();
+        String query = "SELECT * FROM books WHERE status = 1";
+
+        try (Connection connection  = DataBaseManager.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Book book = new Book(
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getString("genre"),
+                        rs.getBoolean("status"),
+                        rs.getInt("id")
+                );
+                availableBooks.add(book);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return availableBooks;
+    }
+
+    public static void update(Book book) {
+        String query = "UPDATE books SET title = ?, author = ?, genre = ?, status = ? WHERE id = ?";
+
+        try (Connection connection = DataBaseManager.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, book.getTitle());
+            stmt.setString(2, book.getAuthor());
+            stmt.setString(3, book.getGenre());
+
+            stmt.setInt(4, book.isAvailable() ? 1 : 0);
+            stmt.setInt(5, book.getIndex());
+
+            stmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }
