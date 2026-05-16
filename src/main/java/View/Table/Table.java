@@ -1,6 +1,7 @@
 package View.Table;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class Table {
     private JScrollPane wrapTable;
@@ -8,16 +9,14 @@ public class Table {
     private boolean editMode = false;
 
     public Table(){
-        wrapTable = new JScrollPane();
-
-        table = new JTable(){
+        table = new JTable(new DefaultTableModel()){
             @Override
             public boolean isCellEditable(int row, int column) {
                 return editMode;
             }
         };
 
-        wrapTable.add(table);
+        wrapTable = new JScrollPane(table);
     }
 
     public JTable getTable() {

@@ -40,4 +40,20 @@ public class ViewWindow{
     public JFrame getWindow() {
         return window;
     }
+
+    public SideBar getSideBar() {
+        return sideBar;
+    }
+
+    public StatusBar getStatusBar() {
+        return statusBar;
+    }
+
+    public Table getDataTable() {
+        return dataTable;
+    }
+
+    public ToolBar getToolBar() {
+        return toolBar;
+    }
 }

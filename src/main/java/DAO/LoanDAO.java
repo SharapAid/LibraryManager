@@ -23,26 +23,34 @@ public class LoanDAO {
         }
     }
 
-    public List<Loan> getAll() {
-        List<Loan> loansList = new ArrayList<>();
-        String sql = "SELECT * FROM loans";
+    public List<Object[]> getAllDetailed() {
+        List<Object[]> report = new ArrayList<>();
+
+        String sql = """
+        SELECT b.title, c.name, l.loan_date, 'Not returned' as return_date, b.status 
+        FROM loans l
+        JOIN books b ON l.book_id = b.id
+        JOIN clients c ON l.client_id = c.id
+    """;
 
         try (Connection conn = DataBaseManager.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                Loan loan = new Loan(
-                        rs.getInt("book_id"),
-                        rs.getInt("client_id"),
+                String status = rs.getInt("status") == 1 ? "Available" : "Borrowed";
+
+                report.add(new Object[]{
+                        rs.getString("title"),
+                        rs.getString("name"),
                         rs.getString("loan_date"),
-                        rs.getInt("id")
-                );
-                loansList.add(loan);
+                        rs.getString("return_date"),
+                        status
+                });
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return loansList;
+        return report;
     }
 }
