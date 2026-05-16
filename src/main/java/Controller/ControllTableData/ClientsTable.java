@@ -20,7 +20,15 @@ public class ClientsTable {
 
     private void initListeners() {
         view.getSideBar().getBoardClients().addActionListener(e -> {
+            view.getToolBar().getTitleBar().getTitleLabel().setText("List clients");
             loadClientsToTable();
+        });
+
+        view.getToolBar().getButtonBar().getRefreshButton().addActionListener(e -> {
+            if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List clients")) {
+                loadClientsToTable();
+                System.out.println("Clients table refreshed!");
+            }
         });
     }
 

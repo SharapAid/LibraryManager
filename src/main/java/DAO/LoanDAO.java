@@ -9,8 +9,8 @@ public class LoanDAO {
 
     public void insert(Loan loan) {
         String sql = "INSERT INTO loans (book_id, client_id, loan_date) VALUES (?, ?, ?)";
-        try (Connection conn = DataBaseManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection connection = DataBaseManager.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
             pstmt.setInt(1, loan.getBookId());
             pstmt.setInt(2, loan.getClientId());
@@ -33,9 +33,9 @@ public class LoanDAO {
         JOIN clients c ON l.client_id = c.id
     """;
 
-        try (Connection conn = DataBaseManager.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection connection = DataBaseManager.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(sql)) {
 
             while (rs.next()) {
                 String status = rs.getInt("status") == 1 ? "Available" : "Borrowed";

@@ -18,7 +18,15 @@ public class LoansTable {
 
     private void initListeners() {
         view.getSideBar().getBoardBooksLoans().addActionListener(e -> {
+            view.getToolBar().getTitleBar().getTitleLabel().setText("List loans");
             loadLoansToTable();
+        });
+
+        view.getToolBar().getButtonBar().getRefreshButton().addActionListener(e -> {
+            if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List loans")) {
+                loadLoansToTable();
+                System.out.println("Loans table refreshed!");
+            }
         });
     }
 

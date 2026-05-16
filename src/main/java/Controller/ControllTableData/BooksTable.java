@@ -22,7 +22,15 @@ public class BooksTable {
 
     private void initListeners() {
         view.getSideBar().getBoardBooks().addActionListener(e -> {
+            view.getToolBar().getTitleBar().getTitleLabel().setText("List books");
             loadBooksToTable();
+        });
+
+        view.getToolBar().getButtonBar().getRefreshButton().addActionListener(e -> {
+            if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List books")) {
+                loadBooksToTable();
+                System.out.println("Books table refreshed!");
+            }
         });
     }
 

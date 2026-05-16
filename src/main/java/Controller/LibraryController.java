@@ -14,5 +14,11 @@ public class LibraryController {
         booksModel = new BooksTable(view);
         clientsModel = new ClientsTable(view);
         loansModel = new LoansTable(view);
+
+        setupDefaultTable(view);
+    }
+
+    private void setupDefaultTable(ViewWindow view) {
+        view.getSideBar().getBoardBooksLoans().doClick();
     }
 }

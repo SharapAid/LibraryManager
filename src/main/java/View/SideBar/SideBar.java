@@ -25,7 +25,7 @@ public class SideBar{
 
         boardBooks = new CustomButtonSideBar("Board of books",1);
         boardClients = new CustomButtonSideBar("Board of clients",2);
-        boardBooksLoans = new CustomButtonSideBar("Board of books loans",3);
+        boardBooksLoans = new CustomButtonSideBar("Board of loans",3);
 
         wrapButton.add(boardBooks);
         wrapButton.add(boardClients);

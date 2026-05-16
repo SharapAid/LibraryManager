@@ -12,7 +12,7 @@ public class TitleBar {
         wrapTitle.setPreferredSize(new Dimension(120,30));
         wrapTitle.setOpaque(false);
 
-        titleLabel = new JLabel("List books");
+        titleLabel = new JLabel();
         titleLabel.setFont(new Font("Arial", Font.BOLD, 15));
         titleLabel.setForeground(new Color(255,255,255));
 
