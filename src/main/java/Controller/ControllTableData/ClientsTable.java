@@ -2,6 +2,7 @@ package Controller.ControllTableData;
 
 import DAO.ClientDAO;
 import Model.Entity.Client;
+import View.CustomElements.CustomAlert;
 import View.ModelTable.ClientsModel;
 import View.ViewWindow;
 
@@ -51,7 +52,7 @@ public class ClientsTable {
                         loadClientsToTable();
                     }
                     else {
-                        JOptionPane.showMessageDialog(form.getWrapForm(), "Name and Phone fields are required!", "Warning", JOptionPane.WARNING_MESSAGE);
+                        CustomAlert.showWarning(view.getWindow(), "Please fill all fields!");
                     }
                 });
                 form.getWrapForm().setVisible(true);

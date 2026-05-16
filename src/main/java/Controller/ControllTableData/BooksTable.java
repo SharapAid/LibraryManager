@@ -2,6 +2,7 @@ package Controller.ControllTableData;
 
 import DAO.BookDAO;
 import Model.Entity.Book;
+import View.CustomElements.CustomAlert;
 import View.ModelTable.BooksModel;
 import View.ViewWindow;
 
@@ -52,7 +53,7 @@ public class BooksTable {
                         loadBooksToTable();
                     }
                     else {
-                        JOptionPane.showMessageDialog(form.getWrapForm(), "Please fill all fields!", "Warning", JOptionPane.WARNING_MESSAGE);
+                        CustomAlert.showWarning(view.getWindow(), "Please fill all fields!");
                     }
                 });
                 form.getWrapForm().setVisible(true);
