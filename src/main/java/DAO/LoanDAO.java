@@ -30,9 +30,8 @@ public class LoanDAO {
         List<Object[]> report = new ArrayList<>();
 
         String sql = """
-            SELECT b.title, c.name, l.loan_date, 
-                   COALESCE(l.date_returned, 'Not returned') as actual_date_returned, 
-                   b.status 
+            SELECT l.id as loan_id, b.title, c.name, l.loan_date,
+                   COALESCE(l.date_returned, 'Not returned') as actual_date_returned
             FROM loans l
             JOIN books b ON l.book_id = b.id
             JOIN clients c ON l.client_id = c.id
@@ -43,17 +42,16 @@ public class LoanDAO {
              ResultSet rs = statement.executeQuery(sql)) {
 
             while (rs.next()) {
-                boolean status = rs.getBoolean("status");
-
                 report.add(new Object[]{
+                        rs.getInt("loan_id"),
                         rs.getString("title"),
                         rs.getString("name"),
                         rs.getString("loan_date"),
                         rs.getString("actual_date_returned"),
-                        status
                 });
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
         return report;
@@ -75,34 +73,46 @@ public class LoanDAO {
         }
     }
 
-    public static void returnBookByTitle(String bookTitle, String returnDate) {
-        String updateLoanSql = "UPDATE loans SET date_returned = ? " +
-                "WHERE book_id = (SELECT id FROM books WHERE title = ? LIMIT 1) " +
-                "AND date_returned IS NULL";
+    public static void returnBookByLoanId(int loanId) {
+        String selectBookIdSql = "SELECT book_id FROM loans WHERE id = ?";
 
-        String updateBookSql = "UPDATE books SET status = 1 WHERE title = ?";
+        String updateLoanSql = "UPDATE loans SET date_returned = ? WHERE id = ?";
+
+        String updateBookSql = "UPDATE books SET status = 1 WHERE id = ?";
 
         try (Connection connection = DataBaseManager.getConnection()) {
             connection.setAutoCommit(false);
 
-            try (PreparedStatement stmtLoan = connection.prepareStatement(updateLoanSql);
-                 PreparedStatement stmtBook = connection.prepareStatement(updateBookSql)) {
-
-                stmtLoan.setString(1, returnDate);
-                stmtLoan.setString(2, bookTitle);
-                stmtLoan.executeUpdate();
-
-                stmtBook.setString(1, bookTitle);
-                stmtBook.executeUpdate();
-
-                connection.commit();
+            int bookId = -1;
+            try (PreparedStatement stmtSelect = connection.prepareStatement(selectBookIdSql)) {
+                stmtSelect.setInt(1, loanId);
+                try (ResultSet rs = stmtSelect.executeQuery()) {
+                    if (rs.next()) {
+                        bookId = rs.getInt("book_id");
+                    }
+                }
             }
-            catch (SQLException e) {
-                connection.rollback();
-                throw e;
+
+            if (bookId != -1) {
+                try (PreparedStatement stmtLoan = connection.prepareStatement(updateLoanSql);
+                     PreparedStatement stmtBook = connection.prepareStatement(updateBookSql)) {
+
+                    String currentDate = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                    stmtLoan.setString(1, currentDate);
+                    stmtLoan.setInt(2, loanId);
+                    stmtLoan.executeUpdate();
+
+                    stmtBook.setInt(1, bookId);
+                    stmtBook.executeUpdate();
+
+                    connection.commit();
+                } catch (SQLException e) {
+                    connection.rollback();
+                    throw e;
+                }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

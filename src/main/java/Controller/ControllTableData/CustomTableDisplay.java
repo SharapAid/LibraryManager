@@ -15,34 +15,41 @@ public class CustomTableDisplay {
                                                            int row, int column) {
 
                 Component c = super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
-
                 setHorizontalAlignment(SwingConstants.CENTER);
 
-                if (value instanceof Boolean) {
+                String dateReturned = t.getValueAt(row, 4).toString();
+
+                if (isSelected) {
+                    c.setForeground(t.getSelectionForeground());
+                }
+                else {
+                    c.setForeground(t.getForeground());
+                }
+
+                if (column == 4) {
+                    if (dateReturned.equals("Not returned")) {
+                        c.setForeground(new Color(231, 76, 60));
+                    }
+                    else {
+                        c.setForeground(new Color(0, 0, 0));
+                    }
+                }
+
+                if (column == 5 && value instanceof Boolean) {
                     if ((Boolean) value) {
                         setText("Available");
-                        c.setForeground(new java.awt.Color(46, 204, 113));
+                        c.setForeground(new Color(46, 204, 113));
                     }
                     else {
                         setText("Borrowed");
-                        c.setForeground(new java.awt.Color(231, 76, 60));
-                    }
-                }
-                else {
-                    if (isSelected) {
-                        c.setForeground(t.getSelectionForeground());
-                    }
-                    else {
-                        c.setForeground(t.getForeground());
+                        c.setForeground(new Color(231, 76, 60));
                     }
                 }
                 return c;
             }
         };
-
-        TableColumnModel columnModel = table.getColumnModel();
-        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-            columnModel.getColumn(i).setCellRenderer(centerAndStatusRenderer);
+        for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerAndStatusRenderer);
         }
     }
 }

@@ -4,7 +4,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class LoansModel {
     private DefaultTableModel model;
-    private final String[] columns = {"Name book", "Name reader", "Date borrowed", "Date returned", "Status"};
+    private final String[] columns = {"ID", "Name book", "Name reader", "Date borrowed", "Date returned"};
 
     public LoansModel(){
         model = new DefaultTableModel(columns, 0);

@@ -95,16 +95,15 @@ public class LoansTable {
                 return;
             }
 
-            String dateReturned = view.getDataTable().getTable().getValueAt(selectedRow, 3).toString();
+            String dateReturned = view.getDataTable().getTable().getValueAt(selectedRow, 4).toString();
             if (!dateReturned.equals("Not returned")) {
                 CustomAlert.showWarning(view.getWindow(), "This book has already been returned!");
                 return;
             }
 
-            String bookTitle = view.getDataTable().getTable().getValueAt(selectedRow, 0).toString();
+            int loanId = Integer.parseInt(view.getDataTable().getTable().getValueAt(selectedRow, 0).toString());
 
-            String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            LoanDAO.returnBookByTitle(bookTitle, currentDate);
+            LoanDAO.returnBookByLoanId(loanId);
 
             loadLoansToTable();
         });
