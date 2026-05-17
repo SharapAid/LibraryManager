@@ -11,8 +11,9 @@ import View.Forms.LoanForm;
 import View.ModelTable.LoansModel;
 import View.ViewWindow;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.util.List;
 
 public class LoansTable {
@@ -29,6 +30,7 @@ public class LoansTable {
     private void initListeners() {
         view.getSideBar().getBoardBooksLoans().addActionListener(e -> {
             view.getToolBar().getTitleBar().getTitleLabel().setText("List loans");
+            view.getToolBar().getSearchBar().getSearchBar().setText("");
             loadLoansToTable();
         });
 
@@ -36,6 +38,7 @@ public class LoansTable {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List loans")) {
                 loadLoansToTable();
                 view.getStatusBar().getInfoBar().getRowsText().setText("Loans table refreshed!");
+                view.getToolBar().getSearchBar().getSearchBar().setText("");
             }
         });
 
@@ -112,6 +115,33 @@ public class LoansTable {
 
             loadLoansToTable();
         });
+
+        view.getToolBar().getSearchBar().getSearchBar().getDocument().addDocumentListener(new DocumentListener() {
+            private void triggerFilter() {
+                if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List loans")) {
+                    String text = view.getToolBar().getSearchBar().getSearchBar().getText();
+                    JTable table = view.getDataTable().getTable();
+                    CustomTableDisplay.applySearchFilter(table, text);
+
+                    int visibleRows = table.getRowCount();
+                    view.getStatusBar().getStatusLabel().setText("Rows: " + visibleRows);
+                }
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                triggerFilter();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                triggerFilter();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                triggerFilter();
+            }
+        });
     }
 
     private void loadLoansToTable() {
@@ -123,8 +153,13 @@ public class LoansTable {
         }
 
         view.getDataTable().getTable().setModel(model.getModel());
+
         int rowCount = view.getDataTable().getTable().getRowCount();
         view.getStatusBar().getStatusLabel().setText("Rows: " + rowCount);
+
         CustomTableDisplay.customizeTableDisplay(view.getDataTable().getTable());
+
+        String currentSearchText = view.getToolBar().getSearchBar().getSearchBar().getText();
+        CustomTableDisplay.applySearchFilter(view.getDataTable().getTable(), currentSearchText);
     }
 }

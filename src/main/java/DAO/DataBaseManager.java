@@ -1,10 +1,6 @@
 package DAO;
 
-import Model.Entity.Book;
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DataBaseManager {
     private static final String URL = "jdbc:sqlite:library.db";
@@ -49,7 +45,6 @@ public class DataBaseManager {
                 );
             """);
 
-            System.out.println("Data base is successfully initialize!");
         }
         catch (SQLException e) {
             e.printStackTrace();

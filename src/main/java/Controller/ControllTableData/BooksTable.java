@@ -7,11 +7,9 @@ import View.Forms.BookForm;
 import View.ModelTable.BooksModel;
 import View.ViewWindow;
 
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import java.awt.Component;
-
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.util.List;
 
 public class BooksTable {
@@ -28,12 +26,14 @@ public class BooksTable {
     private void initListeners() {
         view.getSideBar().getBoardBooks().addActionListener(e -> {
             view.getToolBar().getTitleBar().getTitleLabel().setText("List books");
+            view.getToolBar().getSearchBar().getSearchBar().setText("");
             loadBooksToTable();
         });
 
         view.getToolBar().getButtonBar().getRefreshButton().addActionListener(e -> {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List books")) {
                 loadBooksToTable();
+                view.getToolBar().getSearchBar().getSearchBar().setText("");
                 view.getStatusBar().getInfoBar().getRowsText().setText("Books table refreshed!");
             }
         });
@@ -90,6 +90,33 @@ public class BooksTable {
 
             loadBooksToTable();
         });
+
+        view.getToolBar().getSearchBar().getSearchBar().getDocument().addDocumentListener(new DocumentListener() {
+            private void triggerFilter() {
+                if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List books")) {
+                    String text = view.getToolBar().getSearchBar().getSearchBar().getText();
+                    JTable table = view.getDataTable().getTable();
+                    CustomTableDisplay.applySearchFilter(table, text);
+
+                    int visibleRows = table.getRowCount();
+                    view.getStatusBar().getStatusLabel().setText("Rows: " + visibleRows);
+                }
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                triggerFilter();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                triggerFilter();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                triggerFilter();
+            }
+        });
     }
 
     private void loadBooksToTable() {
@@ -102,8 +129,13 @@ public class BooksTable {
             });
         }
         view.getDataTable().getTable().setModel(model.getModel());
+
         int rowCount = view.getDataTable().getTable().getRowCount();
         view.getStatusBar().getStatusLabel().setText("Rows: " + rowCount);
+
         CustomTableDisplay.customizeTableDisplay(view.getDataTable().getTable());
+
+        String currentSearchText = view.getToolBar().getSearchBar().getSearchBar().getText();
+        CustomTableDisplay.applySearchFilter(view.getDataTable().getTable(), currentSearchText);
     }
 }

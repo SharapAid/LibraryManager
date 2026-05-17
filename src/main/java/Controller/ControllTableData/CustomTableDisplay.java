@@ -2,11 +2,18 @@ package Controller.ControllTableData;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 
 public class CustomTableDisplay {
 
     public static void customizeTableDisplay(JTable table) {
+
+        if (table.getModel() instanceof DefaultTableModel model) {
+            table.setRowSorter(new TableRowSorter<>(model));
+        }
+
         if (table.getColumnCount() > 0) {
             table.getColumnModel().getColumn(0).setMinWidth(40);
             table.getColumnModel().getColumn(0).setMaxWidth(60);
@@ -27,7 +34,9 @@ public class CustomTableDisplay {
                     c.setForeground(t.getForeground());
                 }
 
-                String dateReturned = t.getValueAt(row, 4).toString();
+                int modelRow = t.convertRowIndexToModel(row);
+
+                String dateReturned = t.getModel().getValueAt(modelRow, 4).toString();
 
                 if (column == 4) {
                     if (dateReturned.equals("Not returned")) {
@@ -53,6 +62,19 @@ public class CustomTableDisplay {
         };
         for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerAndStatusRenderer);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void applySearchFilter(JTable table, String text) {
+        TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) table.getRowSorter();
+
+        if (sorter != null) {
+            if (text == null || text.trim().isEmpty()) {
+                sorter.setRowFilter(null);
+            } else {
+                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+            }
         }
     }
 }
