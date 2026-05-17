@@ -30,7 +30,7 @@ public class ClientsTable {
         view.getToolBar().getButtonBar().getRefreshButton().addActionListener(e -> {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List clients")) {
                 loadClientsToTable();
-                System.out.println("Clients table refreshed!");
+                view.getStatusBar().getInfoBar().getRowsText().setText("Clients table refreshed!");
             }
         });
 
@@ -51,6 +51,7 @@ public class ClientsTable {
 
                         form.getWrapForm().dispose();
                         loadClientsToTable();
+                        view.getStatusBar().getInfoBar().getRowsText().setText("The client has been successfully added!");
                     }
                     else {
                         CustomAlert.showWarning(view.getWindow(), "Please fill all fields!");
@@ -80,6 +81,7 @@ public class ClientsTable {
             }
 
             DAO.ClientDAO.delete(clientId);
+            view.getStatusBar().getInfoBar().getRowsText().setText("The client has been successfully deleted!");
 
             loadClientsToTable();
         });
@@ -96,6 +98,8 @@ public class ClientsTable {
         }
 
         view.getDataTable().getTable().setModel(model.getModel());
+        int rowCount = view.getDataTable().getTable().getRowCount();
+        view.getStatusBar().getStatusLabel().setText("Rows: " + rowCount);
         CustomTableDisplay.customizeTableDisplay(view.getDataTable().getTable());
     }
 }

@@ -13,7 +13,7 @@ public class StatusBar {
         statusBar.setBorder(BorderFactory.createEtchedBorder());
         statusBar.setBackground(new Color(93, 93, 101));
 
-        statusLabel = new JLabel("Rows: ");
+        statusLabel = new JLabel();
         statusLabel.setForeground(new Color(255,255,255));
         statusLabel.setBorder(BorderFactory.createEmptyBorder(2,5,2,5));
 

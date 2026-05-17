@@ -34,7 +34,7 @@ public class BooksTable {
         view.getToolBar().getButtonBar().getRefreshButton().addActionListener(e -> {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List books")) {
                 loadBooksToTable();
-                System.out.println("Books table refreshed!");
+                view.getStatusBar().getInfoBar().getRowsText().setText("Books table refreshed!");
             }
         });
 
@@ -56,6 +56,7 @@ public class BooksTable {
                         form.getWrapForm().dispose();
 
                         loadBooksToTable();
+                        view.getStatusBar().getInfoBar().getRowsText().setText("The book has been successfully added!");
                     }
                     else {
                         CustomAlert.showWarning(view.getWindow(), "Please fill all fields!");
@@ -85,6 +86,7 @@ public class BooksTable {
             }
 
             BookDAO.delete(bookId);
+            view.getStatusBar().getInfoBar().getRowsText().setText("The book has been successfully deleted!");
 
             loadBooksToTable();
         });
@@ -100,6 +102,8 @@ public class BooksTable {
             });
         }
         view.getDataTable().getTable().setModel(model.getModel());
+        int rowCount = view.getDataTable().getTable().getRowCount();
+        view.getStatusBar().getStatusLabel().setText("Rows: " + rowCount);
         CustomTableDisplay.customizeTableDisplay(view.getDataTable().getTable());
     }
 }

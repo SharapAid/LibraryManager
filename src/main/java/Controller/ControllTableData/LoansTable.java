@@ -35,7 +35,7 @@ public class LoansTable {
         view.getToolBar().getButtonBar().getRefreshButton().addActionListener(e -> {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List loans")) {
                 loadLoansToTable();
-                System.out.println("Loans table refreshed!");
+                view.getStatusBar().getInfoBar().getRowsText().setText("Loans table refreshed!");
             }
         });
 
@@ -75,8 +75,12 @@ public class LoansTable {
                         BookDAO.update(selectedBook);
 
                         form.getWrapForm().dispose();
+
+                        view.getStatusBar().getInfoBar().getRowsText().setText("The loan has been successfully added!");
+
                         loadLoansToTable();
-                    } else {
+                    }
+                    else {
                         CustomAlert.showWarning(form.getWrapForm(), "Please check all fields!");
                     }
                 });
@@ -104,6 +108,7 @@ public class LoansTable {
             int loanId = Integer.parseInt(view.getDataTable().getTable().getValueAt(selectedRow, 0).toString());
 
             LoanDAO.returnBookByLoanId(loanId);
+            view.getStatusBar().getInfoBar().getRowsText().setText("The book returned successfully!");
 
             loadLoansToTable();
         });
@@ -118,6 +123,8 @@ public class LoansTable {
         }
 
         view.getDataTable().getTable().setModel(model.getModel());
+        int rowCount = view.getDataTable().getTable().getRowCount();
+        view.getStatusBar().getStatusLabel().setText("Rows: " + rowCount);
         CustomTableDisplay.customizeTableDisplay(view.getDataTable().getTable());
     }
 }
