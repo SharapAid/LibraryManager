@@ -3,6 +3,7 @@ package Controller.ControllTableData;
 import DAO.ClientDAO;
 import Model.Entity.Client;
 import View.CustomElements.CustomAlert;
+import View.Forms.ClientForm;
 import View.ModelTable.ClientsModel;
 import View.ViewWindow;
 
@@ -36,7 +37,7 @@ public class ClientsTable {
         view.getToolBar().getButtonBar().getAddButton().addActionListener(e -> {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List clients")) {
 
-                View.Forms.ClientForm form = new View.Forms.ClientForm(view.getWindow());
+                ClientForm form = new ClientForm(view.getWindow());
 
                 form.getSaveButton().addActionListener(ev -> {
                     String name = form.getClientName();
@@ -57,6 +58,30 @@ public class ClientsTable {
                 });
                 form.getWrapForm().setVisible(true);
             }
+        });
+
+        view.getToolBar().getButtonBar().getDeleteButton().addActionListener(e -> {
+            if (!view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List clients")) {
+                return;
+            }
+
+            int selectedRow = view.getDataTable().getTable().getSelectedRow();
+            if (selectedRow == -1) {
+                CustomAlert.showWarning(view.getWindow(), "Select a client from the table!");
+                return;
+            }
+
+            int clientId = Integer.parseInt(view.getDataTable().getTable().getValueAt(selectedRow, 0).toString());
+            String clientName = view.getDataTable().getTable().getValueAt(selectedRow, 1).toString();
+
+            if (ClientDAO.hasActiveLoans(clientId)) {
+                CustomAlert.showWarning(view.getWindow(), "Cannot delete client! " + clientName + " currently has unreturned books.");
+                return;
+            }
+
+            DAO.ClientDAO.delete(clientId);
+
+            loadClientsToTable();
         });
     }
 

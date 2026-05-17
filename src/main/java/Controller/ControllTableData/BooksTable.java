@@ -3,6 +3,7 @@ package Controller.ControllTableData;
 import DAO.BookDAO;
 import Model.Entity.Book;
 import View.CustomElements.CustomAlert;
+import View.Forms.BookForm;
 import View.ModelTable.BooksModel;
 import View.ViewWindow;
 
@@ -40,7 +41,7 @@ public class BooksTable {
         view.getToolBar().getButtonBar().getAddButton().addActionListener(e -> {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List books")) {
 
-                View.Forms.BookForm form = new View.Forms.BookForm(view.getWindow());
+                BookForm form = new View.Forms.BookForm(view.getWindow());
 
                 form.getSaveButton().addActionListener(ev -> {
 
@@ -62,6 +63,30 @@ public class BooksTable {
                 });
                 form.getWrapForm().setVisible(true);
             }
+        });
+
+        view.getToolBar().getButtonBar().getDeleteButton().addActionListener(e -> {
+            if (!view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List books")) {
+                return;
+            }
+
+            int selectedRow = view.getDataTable().getTable().getSelectedRow();
+            if (selectedRow == -1) {
+                CustomAlert.showWarning(view.getWindow(), "Select a book from the table!");
+                return;
+            }
+
+            int bookId = Integer.parseInt(view.getDataTable().getTable().getValueAt(selectedRow, 0).toString());
+            String bookTitle = view.getDataTable().getTable().getValueAt(selectedRow, 1).toString();
+
+            if (BookDAO.isCurrentlyBorrowed(bookId)) {
+                CustomAlert.showWarning(view.getWindow(), "Cannot delete! The book '" + bookTitle + "' is currently borrowed by a reader.");
+                return;
+            }
+
+            BookDAO.delete(bookId);
+
+            loadBooksToTable();
         });
     }
 

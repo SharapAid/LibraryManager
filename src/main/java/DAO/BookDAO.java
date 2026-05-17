@@ -12,8 +12,8 @@ public class BookDAO {
 
     public void insert(Book book) {
         String sql = "INSERT INTO books (title, author, genre) VALUES (?, ?, ?)";
-        try (Connection conn = DataBaseManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection connection = DataBaseManager.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, book.getTitle());
             pstmt.setString(2, book.getAuthor());
             pstmt.setString(3, book.getGenre());
@@ -28,9 +28,9 @@ public class BookDAO {
         List<Book> books = new ArrayList<>();
         String sql = "SELECT * FROM books";
 
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(sql)) {
 
             while (rs.next()) {
                 Book book = new Book(
@@ -96,8 +96,8 @@ public class BookDAO {
 
     public static Book getById(int id) {
         String sql = "SELECT * FROM books WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection connection = getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
@@ -109,5 +109,34 @@ public class BookDAO {
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return null;
+    }
+
+    public static boolean isCurrentlyBorrowed(int bookId) {
+        String sql = "SELECT COUNT(*) FROM loans WHERE book_id = ? AND date_returned IS NULL";
+        try (Connection connection = DataBaseManager.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            pstmt.setInt(1, bookId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void delete(int bookId) {
+        String sql = "DELETE FROM books WHERE id = ?";
+        try (Connection connection = DataBaseManager.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            pstmt.setInt(1, bookId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

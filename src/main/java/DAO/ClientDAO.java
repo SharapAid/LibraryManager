@@ -13,8 +13,8 @@ public class ClientDAO {
 
     public void insert(Client client) {
         String sql = "INSERT INTO clients (name, phone, email, address) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DataBaseManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection connection = DataBaseManager.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, client.getName());
             pstmt.setString(2, client.getPhone());
             pstmt.setString(3, client.getEmail());
@@ -28,9 +28,9 @@ public class ClientDAO {
         List<Client> clients = new ArrayList<>();
         String sql = "SELECT * FROM clients";
 
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(sql)) {
 
             while (rs.next()) {
                 Client client = new Client(
@@ -46,6 +46,37 @@ public class ClientDAO {
             e.printStackTrace();
         }
         return clients;
+    }
+
+    public static boolean hasActiveLoans(int clientId) {
+        String sql = "SELECT COUNT(*) FROM loans WHERE client_id = ? AND date_returned IS NULL";
+        try (Connection connection = DataBaseManager.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            pstmt.setInt(1, clientId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void delete(int clientId) {
+        String sql = "DELETE FROM clients WHERE id = ?";
+        try (Connection connection = DataBaseManager.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            pstmt.setInt(1, clientId);
+            pstmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }
