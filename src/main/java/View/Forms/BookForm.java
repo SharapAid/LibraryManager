@@ -2,7 +2,8 @@ package View.Forms;
 
 import View.CustomElements.CustomButton;
 import View.CustomElements.RoundTextField;
-import View.Forms.GenreData.Genres;
+import View.CustomElements.TextPlaceholder;
+import View.Forms.ModelData.DataModels;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +13,7 @@ public class BookForm{
     private JTextField titleField;
     private JTextField authorField;
     private JComboBox genreBox;
-    private Genres genre;
+    private DataModels genre;
 
     private CustomButton saveButton;
     private CustomButton cancelButton;
@@ -78,12 +79,15 @@ public class BookForm{
         authorField.setPreferredSize(new Dimension(250, 30));
         fieldsPanel.add(authorField);
 
+        TextPlaceholder.addPlaceholder(titleField, "Harry Potter");
+        TextPlaceholder.addPlaceholder(authorField, "e.g. John Doe");
+
         JLabel genreLabel = new JLabel("Genre:");
         genreLabel.setForeground(textColor);
         genreLabel.setFont(labelFont);
         fieldsPanel.add(genreLabel);
 
-        genre = new Genres();
+        genre = new DataModels();
         genreBox = new JComboBox<>(genre.getGenres());
         genreBox.setSelectedIndex(0);
         fieldsPanel.add(genreBox);

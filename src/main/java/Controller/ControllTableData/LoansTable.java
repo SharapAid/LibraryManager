@@ -7,6 +7,7 @@ import Model.Entity.Book;
 import Model.Entity.Client;
 import Model.Entity.Loan;
 import View.CustomElements.CustomAlert;
+import View.CustomElements.CustomTableDisplay;
 import View.Forms.LoanForm;
 import View.ModelTable.LoansModel;
 import View.ViewWindow;

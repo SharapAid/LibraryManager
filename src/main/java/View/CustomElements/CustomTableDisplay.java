@@ -1,4 +1,4 @@
-package Controller.ControllTableData;
+package View.CustomElements;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;

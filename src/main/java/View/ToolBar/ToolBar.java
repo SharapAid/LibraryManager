@@ -1,5 +1,7 @@
 package View.ToolBar;
 
+import View.CustomElements.TextPlaceholder;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,7 +15,6 @@ public class ToolBar {
         toolBar = new JPanel(new BorderLayout());
         toolBar.setBackground(new Color(93, 93, 101));
         toolBar.setBorder(BorderFactory.createEmptyBorder(5,15,5,15));
-
 
         toolBar.add(titleBar.getWrapTitle(), BorderLayout.WEST);
         toolBar.add(buttonBar.getWrapButton());

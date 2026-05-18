@@ -1,6 +1,6 @@
-package View.Forms.GenreData;
+package View.Forms.ModelData;
 
-public class Genres {
+public class DataModels {
     private String[] genres = {
             "Fantasy",
             "Science Fiction",
@@ -38,9 +38,21 @@ public class Genres {
             "Graphic Novel"
     };
 
-    public Genres(){}
+    private final String[] countryCodes = {
+            "+39 (Italia)",
+            "+375 (Belarus)",
+            "+7 (Russia)",
+            "+380 (Ukraine)",
+            "+1 (USA)"
+    };
+
+    public DataModels(){}
 
     public String[] getGenres() {
         return genres;
+    }
+
+    public String[] getCountryCodes() {
+        return countryCodes;
     }
 }

@@ -2,6 +2,8 @@ package View.Forms;
 
 import View.CustomElements.CustomButton;
 import View.CustomElements.RoundTextField;
+import View.CustomElements.TextPlaceholder;
+import View.Forms.ModelData.DataModels;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +12,10 @@ public class ClientForm {
     private JDialog wrapForm;
     private JTextField nameField;
     private JTextField phoneField;
+    JComboBox<String> codeComboBox;
     private JTextField emailField;
     private JTextField addressField;
+    private DataModels codeCountry;
 
     private CustomButton saveButton;
     private CustomButton cancelButton;
@@ -67,10 +71,14 @@ public class ClientForm {
         nameField.setPreferredSize(new Dimension(250, 30));
         fieldsPanel.add(nameField);
 
+
         JLabel phoneLabel = new JLabel("Phone:");
         phoneLabel.setForeground(textColor);
         phoneLabel.setFont(labelFont);
         fieldsPanel.add(phoneLabel);
+        codeCountry = new DataModels();
+        codeComboBox = new JComboBox<>(codeCountry.getCountryCodes());
+        fieldsPanel.add(codeComboBox);
         phoneField = new RoundTextField(8, 20);
         phoneField.setPreferredSize(new Dimension(250, 30));
         fieldsPanel.add(phoneField);
@@ -83,6 +91,17 @@ public class ClientForm {
         emailField.setPreferredSize(new Dimension(250, 30));
         fieldsPanel.add(emailField);
 
+        emailField.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                String text = emailField.getText().trim();
+
+                if (!text.isEmpty() && !text.contains("@")) {
+                    emailField.setText(text + "@gmail.com");
+                }
+            }
+        });
+
         JLabel addressLabel = new JLabel("Address:");
         addressLabel.setForeground(textColor);
         addressLabel.setFont(labelFont);
@@ -90,6 +109,10 @@ public class ClientForm {
         addressField = new RoundTextField(8, 20);
         addressField.setPreferredSize(new Dimension(250, 30));
         fieldsPanel.add(addressField);
+
+        TextPlaceholder.addPlaceholder(nameField, "e.g. John Doe");
+        TextPlaceholder.addPlaceholder(phoneField, "345 765 234");
+        TextPlaceholder.addPlaceholder(emailField, "example");
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
         buttonPanel.setBackground(backgroundColor);
@@ -110,9 +133,24 @@ public class ClientForm {
         cancelButton.addActionListener(e -> wrapForm.dispose());
     }
 
+    private String getPhoneNumber(){
+        String countryCode = codeComboBox.getSelectedItem().toString().split(" ")[0];
+        String rawPhone = phoneField.getText().trim().replaceAll("\\s+", "");
+
+        String formattedNumber = rawPhone.replaceAll("(\\d{3})(?=\\d)", "$1 ");
+
+        String fullPhone = countryCode + " " + formattedNumber;
+
+        return fullPhone;
+    }
+
     public JDialog getWrapForm() { return wrapForm; }
     public String getClientName() { return nameField.getText(); }
-    public String getClientPhone() { return phoneField.getText(); }
+
+    public String getClientPhone() {
+        return getPhoneNumber();
+    }
+
     public String getClientEmail() { return emailField.getText(); }
     public String getClientAddress() { return addressField.getText(); }
     public JButton getSaveButton() { return saveButton; }

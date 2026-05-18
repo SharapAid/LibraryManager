@@ -3,6 +3,7 @@ package Controller.ControllTableData;
 import DAO.ClientDAO;
 import Model.Entity.Client;
 import View.CustomElements.CustomAlert;
+import View.CustomElements.CustomTableDisplay;
 import View.Forms.ClientForm;
 import View.ModelTable.ClientsModel;
 import View.ViewWindow;

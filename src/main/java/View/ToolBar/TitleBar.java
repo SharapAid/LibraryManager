@@ -13,7 +13,7 @@ public class TitleBar {
         wrapTitle.setOpaque(false);
 
         titleLabel = new JLabel();
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         titleLabel.setForeground(new Color(255,255,255));
 
         wrapTitle.add(titleLabel, BorderLayout.WEST);
