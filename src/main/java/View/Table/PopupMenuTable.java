@@ -1,23 +1,28 @@
 package View.Table;
 
+import View.CustomElements.CustomButton;
+
 import javax.swing.*;
+import java.awt.*;
 
 public class PopupMenuTable {
     private JPopupMenu menuTable;
-    private JMenuItem delete;
-    private JMenuItem edit;
+    private CustomButton delete;
+    private CustomButton edit;
 
     public PopupMenuTable(){
         menuTable = new JPopupMenu();
+        menuTable.setBackground(new Color(93, 93, 101));
+        menuTable.setBorderPainted(false);
 
-        delete = new JMenuItem("Delete row");
-        edit = new JMenuItem("Edit");
+        delete = new CustomButton("Delete row");
+        edit = new CustomButton("Edit");
 
         menuTable.add(edit);
         menuTable.add(delete);
     }
 
-    public JMenuItem getDelete() {
+    public CustomButton getDelete() {
         return delete;
     }
 
@@ -25,7 +30,7 @@ public class PopupMenuTable {
         return menuTable;
     }
 
-    public JMenuItem getEdit() {
+    public JButton getEdit() {
         return edit;
     }
 }
