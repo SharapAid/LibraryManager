@@ -10,14 +10,14 @@ public class CustomTableDisplay {
 
     public static void customizeTableDisplay(JTable table) {
 
-        if (table.getModel() instanceof DefaultTableModel model) {
-            table.setRowSorter(new TableRowSorter<>(model));
-        }
-
         if (table.getColumnCount() > 0) {
             table.getColumnModel().getColumn(0).setMinWidth(40);
             table.getColumnModel().getColumn(0).setMaxWidth(60);
             table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        }
+
+        if (table.getModel() instanceof DefaultTableModel model) {
+            table.setRowSorter(new TableRowSorter<>(model));
         }
 
         DefaultTableCellRenderer centerAndStatusRenderer = new DefaultTableCellRenderer() {

@@ -32,8 +32,8 @@ public class ClientsTable {
 
         view.getToolBar().getButtonBar().getRefreshButton().addActionListener(e -> {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List clients")) {
-                loadClientsToTable();
                 view.getToolBar().getSearchBar().getSearchBar().setText("");
+                loadClientsToTable();
                 view.getStatusBar().getInfoBar().getRowsText().setText("Clients table refreshed!");
             }
         });
@@ -129,8 +129,8 @@ public class ClientsTable {
         }
 
         view.getDataTable().getTable().setModel(model.getModel());
-        int rowCount = view.getDataTable().getTable().getRowCount();
 
+        int rowCount = view.getDataTable().getTable().getModel().getRowCount();
         view.getStatusBar().getStatusLabel().setText("Rows: " + rowCount);
 
         CustomTableDisplay.customizeTableDisplay(view.getDataTable().getTable());

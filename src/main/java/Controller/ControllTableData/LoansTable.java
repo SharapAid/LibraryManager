@@ -36,9 +36,9 @@ public class LoansTable {
 
         view.getToolBar().getButtonBar().getRefreshButton().addActionListener(e -> {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List loans")) {
+                view.getToolBar().getSearchBar().getSearchBar().setText("");
                 loadLoansToTable();
                 view.getStatusBar().getInfoBar().getRowsText().setText("Loans table refreshed!");
-                view.getToolBar().getSearchBar().getSearchBar().setText("");
             }
         });
 
@@ -154,7 +154,7 @@ public class LoansTable {
 
         view.getDataTable().getTable().setModel(model.getModel());
 
-        int rowCount = view.getDataTable().getTable().getRowCount();
+        int rowCount = view.getDataTable().getTable().getModel().getRowCount();
         view.getStatusBar().getStatusLabel().setText("Rows: " + rowCount);
 
         CustomTableDisplay.customizeTableDisplay(view.getDataTable().getTable());

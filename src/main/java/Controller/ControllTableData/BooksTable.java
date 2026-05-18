@@ -32,8 +32,8 @@ public class BooksTable {
 
         view.getToolBar().getButtonBar().getRefreshButton().addActionListener(e -> {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List books")) {
-                loadBooksToTable();
                 view.getToolBar().getSearchBar().getSearchBar().setText("");
+                loadBooksToTable();
                 view.getStatusBar().getInfoBar().getRowsText().setText("Books table refreshed!");
             }
         });
@@ -130,7 +130,7 @@ public class BooksTable {
         }
         view.getDataTable().getTable().setModel(model.getModel());
 
-        int rowCount = view.getDataTable().getTable().getRowCount();
+        int rowCount = view.getDataTable().getTable().getModel().getRowCount();
         view.getStatusBar().getStatusLabel().setText("Rows: " + rowCount);
 
         CustomTableDisplay.customizeTableDisplay(view.getDataTable().getTable());
