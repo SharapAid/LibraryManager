@@ -7,6 +7,7 @@ import View.ToolBar.ToolBar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class ViewWindow{
     private final JFrame window;
@@ -24,6 +25,18 @@ public class ViewWindow{
         window.setMinimumSize(new Dimension(800, 600));
         window.setLocationRelativeTo(null);
         window.setLayout(new BorderLayout());
+
+        try {
+            URL iconURL = getClass().getResource("/app_icon.png");
+            if (iconURL != null) {
+                ImageIcon icon = new ImageIcon(iconURL);
+                window.setIconImage(icon.getImage());
+            } else {
+                System.out.println("Warning: Icon image not found!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         sideBar = new SideBar();
