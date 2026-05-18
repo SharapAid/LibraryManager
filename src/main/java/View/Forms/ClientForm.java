@@ -33,6 +33,7 @@ public class ClientForm {
         wrapForm.setSize(350, 390);
         wrapForm.setLocationRelativeTo(owner);
         wrapForm.setLayout(new BorderLayout());
+        wrapForm.setMinimumSize(new Dimension(350, 390));
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(backgroundColor);

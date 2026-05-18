@@ -30,6 +30,7 @@ public class BookForm{
         wrapForm.setSize(350, 320);
         wrapForm.setLocationRelativeTo(owner);
         wrapForm.setLayout(new BorderLayout());
+        wrapForm.setMinimumSize(new Dimension(350, 320));
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(backgroundColor);

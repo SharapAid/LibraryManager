@@ -3,10 +3,8 @@ package Controller;
 import Controller.ControllTableData.BooksTable;
 import Controller.ControllTableData.ClientsTable;
 import Controller.ControllTableData.LoansTable;
+import Controller.TableController.TableControl;
 import View.ViewWindow;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class LibraryController {
     private BooksTable booksModel;

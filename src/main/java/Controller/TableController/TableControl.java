@@ -1,4 +1,4 @@
-package Controller;
+package Controller.TableController;
 
 import View.ViewWindow;
 

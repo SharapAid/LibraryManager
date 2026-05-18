@@ -21,6 +21,7 @@ public class ViewWindow{
         window = new JFrame(nameApp);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        window.setMinimumSize(new Dimension(800, 600));
         window.setLocationRelativeTo(null);
         window.setLayout(new BorderLayout());
 
