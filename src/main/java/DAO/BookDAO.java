@@ -13,11 +13,11 @@ public class BookDAO {
     public void insert(Book book) {
         String sql = "INSERT INTO books (title, author, genre) VALUES (?, ?, ?)";
         try (Connection connection = DataBaseManager.getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, book.getTitle());
-            pstmt.setString(2, book.getAuthor());
-            pstmt.setString(3, book.getGenre());
-            pstmt.executeUpdate();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, book.getTitle());
+            preparedStatement.setString(2, book.getAuthor());
+            preparedStatement.setString(3, book.getGenre());
+            preparedStatement.executeUpdate();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -30,15 +30,15 @@ public class BookDAO {
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(sql)) {
+             ResultSet resultSet = statement.executeQuery(sql)) {
 
-            while (rs.next()) {
+            while (resultSet.next()) {
                 Book book = new Book(
-                        rs.getString("title"),
-                        rs.getString("author"),
-                        rs.getString("genre"),
-                        rs.getInt("status") == 1,
-                        rs.getInt("id")
+                        resultSet.getString("title"),
+                        resultSet.getString("author"),
+                        resultSet.getString("genre"),
+                        resultSet.getInt("status") == 1,
+                        resultSet.getInt("id")
                 );
                 books.add(book);
             }
@@ -54,16 +54,16 @@ public class BookDAO {
         String query = "SELECT * FROM books WHERE status = 1";
 
         try (Connection connection  = DataBaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            while (rs.next()) {
+            while (resultSet.next()) {
                 Book book = new Book(
-                        rs.getString("title"),
-                        rs.getString("author"),
-                        rs.getString("genre"),
-                        rs.getBoolean("status"),
-                        rs.getInt("id")
+                        resultSet.getString("title"),
+                        resultSet.getString("author"),
+                        resultSet.getString("genre"),
+                        resultSet.getBoolean("status"),
+                        resultSet.getInt("id")
                 );
                 availableBooks.add(book);
             }
@@ -78,16 +78,16 @@ public class BookDAO {
         String query = "UPDATE books SET title = ?, author = ?, genre = ?, status = ? WHERE id = ?";
 
         try (Connection connection = DataBaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-            stmt.setString(1, book.getTitle());
-            stmt.setString(2, book.getAuthor());
-            stmt.setString(3, book.getGenre());
+            statement.setString(1, book.getTitle());
+            statement.setString(2, book.getAuthor());
+            statement.setString(3, book.getGenre());
 
-            stmt.setInt(4, book.isAvailable() ? 1 : 0);
-            stmt.setInt(5, book.getIndex());
+            statement.setInt(4, book.isAvailable() ? 1 : 0);
+            statement.setInt(5, book.getIndex());
 
-            stmt.executeUpdate();
+            statement.executeUpdate();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -97,13 +97,13 @@ public class BookDAO {
     public static Book getById(int id) {
         String sql = "SELECT * FROM books WHERE id = ?";
         try (Connection connection = getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
                     return new Book(
-                            rs.getString("title"), rs.getString("author"),
-                            rs.getString("genre"), rs.getBoolean("status"), rs.getInt("id")
+                            resultSet.getString("title"), resultSet.getString("author"),
+                            resultSet.getString("genre"), resultSet.getBoolean("status"), resultSet.getInt("id")
                     );
                 }
             }
@@ -114,15 +114,16 @@ public class BookDAO {
     public static boolean isCurrentlyBorrowed(int bookId) {
         String sql = "SELECT COUNT(*) FROM loans WHERE book_id = ? AND date_returned IS NULL";
         try (Connection connection = DataBaseManager.getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            pstmt.setInt(1, bookId);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
+            preparedStatement.setInt(1, bookId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
                 }
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
@@ -131,11 +132,12 @@ public class BookDAO {
     public static void delete(int bookId) {
         String sql = "DELETE FROM books WHERE id = ?";
         try (Connection connection = DataBaseManager.getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            pstmt.setInt(1, bookId);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
+            preparedStatement.setInt(1, bookId);
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
     }

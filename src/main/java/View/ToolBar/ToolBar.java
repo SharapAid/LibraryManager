@@ -1,7 +1,5 @@
 package View.ToolBar;
 
-import View.CustomElements.TextPlaceholder;
-
 import javax.swing.*;
 import java.awt.*;
 

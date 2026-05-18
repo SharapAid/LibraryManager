@@ -1,7 +1,7 @@
 package View.Forms.ModelData;
 
 public class DataModels {
-    private String[] genres = {
+    private final String[] genres = {
             "Fantasy",
             "Science Fiction",
             "Dystopia",

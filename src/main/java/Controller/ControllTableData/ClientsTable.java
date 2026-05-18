@@ -85,7 +85,7 @@ public class ClientsTable {
                 return;
             }
 
-            DAO.ClientDAO.delete(clientId);
+            ClientDAO.delete(clientId);
             view.getStatusBar().getInfoBar().getRowsText().setText("The client has been successfully deleted!");
 
             loadClientsToTable();

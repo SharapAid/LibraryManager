@@ -1,7 +1,6 @@
 package View.ToolBar;
 
 import View.CustomElements.RoundTextField;
-import View.CustomElements.TextPlaceholder;
 
 import javax.swing.*;
 import java.awt.*;

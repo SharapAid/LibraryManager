@@ -4,7 +4,6 @@ import DAO.BookDAO;
 import Model.Entity.Book;
 import View.CustomElements.CustomAlert;
 import View.CustomElements.CustomTableDisplay;
-import View.CustomElements.TextPlaceholder;
 import View.Forms.BookForm;
 import View.ModelTable.BooksModel;
 import View.ViewWindow;
@@ -12,8 +11,6 @@ import View.ViewWindow;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class BooksTable {
@@ -45,7 +42,7 @@ public class BooksTable {
         view.getToolBar().getButtonBar().getAddButton().addActionListener(e -> {
             if (view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List books")) {
 
-                BookForm form = new View.Forms.BookForm(view.getWindow());
+                BookForm form = new BookForm(view.getWindow());
 
                 form.getSaveButton().addActionListener(ev -> {
 

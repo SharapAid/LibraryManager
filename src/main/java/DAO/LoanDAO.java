@@ -1,8 +1,9 @@
 package DAO;
 
-import Model.Entity.Book;
 import Model.Entity.Loan;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,15 +12,13 @@ public class LoanDAO {
     public void insert(Loan loan) {
         String sql = "INSERT INTO loans (book_id, client_id, loan_date, date_returned) VALUES (?, ?, ?, ?)";
         try (Connection connection = DataBaseManager.getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            pstmt.setInt(1, loan.getBookId());
-            pstmt.setInt(2, loan.getClientId());
-            pstmt.setString(3, loan.getDateIssued());
-            pstmt.setString(4,loan.getDateReturned());
-            pstmt.executeUpdate();
-
-            System.out.println("Writing about loan created!");
+            preparedStatement.setInt(1, loan.getBookId());
+            preparedStatement.setInt(2, loan.getClientId());
+            preparedStatement.setString(3, loan.getDateIssued());
+            preparedStatement.setString(4,loan.getDateReturned());
+            preparedStatement.executeUpdate();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -39,15 +38,15 @@ public class LoanDAO {
 
         try (Connection connection = DataBaseManager.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(sql)) {
+             ResultSet resultSet = statement.executeQuery(sql)) {
 
-            while (rs.next()) {
+            while (resultSet.next()) {
                 report.add(new Object[]{
-                        rs.getInt("loan_id"),
-                        rs.getString("title"),
-                        rs.getString("name"),
-                        rs.getString("loan_date"),
-                        rs.getString("actual_date_returned"),
+                        resultSet.getInt("loan_id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("name"),
+                        resultSet.getString("loan_date"),
+                        resultSet.getString("actual_date_returned"),
                 });
             }
         }
@@ -61,12 +60,12 @@ public class LoanDAO {
         String query = "UPDATE loans SET date_returned = ? WHERE id = ?";
 
         try (Connection connection = DataBaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            stmt.setString(1, loan.getDateReturned());
-            stmt.setInt(2, loan.getIndex());
+            preparedStatement.setString(1, loan.getDateReturned());
+            preparedStatement.setInt(2, loan.getIndex());
 
-            stmt.executeUpdate();
+            preparedStatement.executeUpdate();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -84,35 +83,37 @@ public class LoanDAO {
             connection.setAutoCommit(false);
 
             int bookId = -1;
-            try (PreparedStatement stmtSelect = connection.prepareStatement(selectBookIdSql)) {
-                stmtSelect.setInt(1, loanId);
-                try (ResultSet rs = stmtSelect.executeQuery()) {
-                    if (rs.next()) {
-                        bookId = rs.getInt("book_id");
+            try (PreparedStatement preparedStatementSelect = connection.prepareStatement(selectBookIdSql)) {
+                preparedStatementSelect.setInt(1, loanId);
+                try (ResultSet resultSet = preparedStatementSelect.executeQuery()) {
+                    if (resultSet.next()) {
+                        bookId = resultSet.getInt("book_id");
                     }
                 }
             }
 
             if (bookId != -1) {
-                try (PreparedStatement stmtLoan = connection.prepareStatement(updateLoanSql);
-                     PreparedStatement stmtBook = connection.prepareStatement(updateBookSql)) {
+                try (PreparedStatement preparedStatementLoan = connection.prepareStatement(updateLoanSql);
+                     PreparedStatement preparedStatementBook = connection.prepareStatement(updateBookSql)) {
 
-                    String currentDate = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-                    stmtLoan.setString(1, currentDate);
-                    stmtLoan.setInt(2, loanId);
-                    stmtLoan.executeUpdate();
+                    preparedStatementLoan.setString(1, currentDate);
+                    preparedStatementLoan.setInt(2, loanId);
+                    preparedStatementLoan.executeUpdate();
 
-                    stmtBook.setInt(1, bookId);
-                    stmtBook.executeUpdate();
+                    preparedStatementBook.setInt(1, bookId);
+                    preparedStatementBook.executeUpdate();
 
                     connection.commit();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     connection.rollback();
                     throw e;
                 }
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
     }
