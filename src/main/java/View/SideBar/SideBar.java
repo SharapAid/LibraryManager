@@ -18,6 +18,7 @@ public class SideBar{
         sidebar = new JPanel(new BorderLayout());
         sidebar.setBackground(new Color(93, 93, 101));
         sidebar.setPreferredSize(new Dimension(150,0));
+        sidebar.setBorder(BorderFactory.createEtchedBorder());
 
         wrapButton = new JPanel();
         wrapButton.setLayout(new GridLayout(0, 1, 0, 0));

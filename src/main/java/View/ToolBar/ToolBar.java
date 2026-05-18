@@ -14,7 +14,7 @@ public class ToolBar {
     public ToolBar(){
         toolBar = new JPanel(new BorderLayout());
         toolBar.setBackground(new Color(93, 93, 101));
-        toolBar.setBorder(BorderFactory.createEmptyBorder(5,15,5,15));
+        toolBar.setBorder(BorderFactory.createEmptyBorder(10,20,10,5));
 
         toolBar.add(titleBar.getWrapTitle(), BorderLayout.WEST);
         toolBar.add(buttonBar.getWrapButton());

@@ -9,8 +9,8 @@ public class InfoBar {
 
     public InfoBar(){
         wrapInfoBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        wrapInfoBar.setBorder(BorderFactory.createEmptyBorder(2,5,2,5));
         wrapInfoBar.setOpaque(false);
-        wrapInfoBar.setBorder(BorderFactory.createEmptyBorder(5,15,5,15));
 
         rowsText = new JLabel();
         rowsText.setForeground(new Color(255,255,255));

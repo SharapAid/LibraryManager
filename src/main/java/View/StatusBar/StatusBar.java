@@ -10,7 +10,7 @@ public class StatusBar {
 
     public StatusBar(){
         statusBar = new JPanel(new BorderLayout());
-        statusBar.setBorder(BorderFactory.createEtchedBorder());
+        statusBar.setPreferredSize(new Dimension(300,30));
         statusBar.setBackground(new Color(93, 93, 101));
 
         statusLabel = new JLabel();

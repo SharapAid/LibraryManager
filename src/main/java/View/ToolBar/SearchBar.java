@@ -22,6 +22,7 @@ public class SearchBar {
         searchBar = new RoundTextField(8,20);
         searchBar.setPreferredSize(new Dimension(150,25));
 
+        wrapSearchbar.add(Box.createHorizontalStrut(5));
         wrapSearchbar.add(searchBar);
     }
 
