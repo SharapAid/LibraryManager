@@ -13,10 +13,10 @@ public class LibraryController {
     private TableControl tableControl;
 
     public LibraryController(ViewWindow view){
-        booksModel = new BooksTable(view);
-        clientsModel = new ClientsTable(view);
-        loansModel = new LoansTable(view);
         tableControl = new TableControl(view);
+        booksModel = new BooksTable(view, tableControl.getPopupMenu());
+        clientsModel = new ClientsTable(view, tableControl.getPopupMenu());
+        loansModel = new LoansTable(view);
 
         setupDefaultTable(view);
     }

@@ -9,7 +9,7 @@ public class TitleBar {
 
     public TitleBar(){
         wrapTitle = new JPanel(new BorderLayout());
-        wrapTitle.setPreferredSize(new Dimension(120,30));
+        wrapTitle.setPreferredSize(new Dimension(110,30));
         wrapTitle.setOpaque(false);
 
         titleLabel = new JLabel();

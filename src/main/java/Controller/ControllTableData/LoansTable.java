@@ -1,5 +1,6 @@
 package Controller.ControllTableData;
 
+import Controller.TableController.TableControl;
 import DAO.BookDAO;
 import DAO.ClientDAO;
 import DAO.LoanDAO;
@@ -30,6 +31,7 @@ public class LoansTable {
 
     private void initListeners() {
         view.getSideBar().getBoardBooksLoans().addActionListener(e -> {
+            view.getToolBar().getButtonBar().getDeleteButton().setText("Mark as returned");
             view.getToolBar().getTitleBar().getTitleLabel().setText("List loans");
             view.getToolBar().getSearchBar().getSearchBar().setText("");
             loadLoansToTable();

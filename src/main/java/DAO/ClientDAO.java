@@ -1,5 +1,6 @@
 package DAO;
 
+import Model.Entity.Book;
 import Model.Entity.Client;
 
 import java.sql.*;
@@ -66,6 +67,42 @@ public class ClientDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static Client getById(int id) {
+        String sql = "SELECT * FROM clients WHERE id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Client(
+                            resultSet.getString("name"), resultSet.getString("phone"),
+                            resultSet.getString("email"), resultSet.getString("address"), resultSet.getInt("id")
+                    );
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return null;
+    }
+
+    public static void update(Client client) {
+        String query = "UPDATE clients SET name = ?, phone = ?, email = ?, address = ? WHERE id = ?";
+
+        try (Connection connection = DataBaseManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, client.getName());
+            statement.setString(2, client.getPhone());
+            statement.setString(3, client.getEmail());
+            statement.setString(4, client.getAddress());
+            statement.setInt(5, client.getIndex());
+
+            statement.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void delete(int clientId) {

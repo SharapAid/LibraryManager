@@ -1,5 +1,6 @@
 package Controller.TableController;
 
+import Controller.ControllTableData.BooksTable;
 import View.Table.PopupMenuTable;
 import View.ViewWindow;
 
@@ -37,25 +38,17 @@ public class TableControl{
             }
 
             private void checkForPopup(MouseEvent e) {
-                if (e.isPopupTrigger()) {
-                    int row = view.getDataTable().getTable().rowAtPoint(e.getPoint());
+                if(!view.getToolBar().getTitleBar().getTitleLabel().getText().equals("List loans")){
+                    if (e.isPopupTrigger()) {
+                        int row = view.getDataTable().getTable().rowAtPoint(e.getPoint());
 
-                    if (row >= 0 && row < view.getDataTable().getTable().getRowCount()) {
-                        view.getDataTable().getTable().setRowSelectionInterval(row, row);
-                        popupMenu.getMenuTable().show(view.getDataTable().getTable(), e.getX(), e.getY());
+                        if (row >= 0 && row < view.getDataTable().getTable().getRowCount()) {
+                            view.getDataTable().getTable().setRowSelectionInterval(row, row);
+                            popupMenu.getMenuTable().show(view.getDataTable().getTable(), e.getX(), e.getY());
+                        }
                     }
                 }
             }
-        });
-
-        popupMenu.getDelete().addActionListener(e -> {
-            int selectedRow = view.getDataTable().getTable().getSelectedRow();
-            System.out.println("Нажали Delete для строки: " + (selectedRow + 1));
-        });
-
-        popupMenu.getEdit().addActionListener(e -> {
-            int selectedRow = view.getDataTable().getTable().getSelectedRow();
-            System.out.println("Нажали Edit для строки: " + (selectedRow + 1));
         });
     }
 
@@ -63,11 +56,15 @@ public class TableControl{
         int selectedRow = view.getDataTable().getTable().getSelectedRow() + 1;
         int selectedColumn = view.getDataTable().getTable().getSelectedColumn() + 1;
 
-        if (selectedRow == -1) {
+        if (selectedRow - 1 == -1) {
             view.getStatusBar().getSelectedRowLabel().setText("");
         }
         else {
             view.getStatusBar().getSelectedRowLabel().setText("Selected Row: " + selectedRow + "    " + "Selected column: " + selectedColumn);
         }
+    }
+
+    public PopupMenuTable getPopupMenu(){
+        return popupMenu;
     }
 }

@@ -116,6 +116,14 @@ public class BookForm{
         return wrapForm;
     }
 
+    public JTextField getTitleField(){
+        return titleField;
+    }
+
+    public JTextField getAuthorField(){
+        return authorField;
+    }
+
     public String getBookTitle() {
         return titleField.getText();
     }
