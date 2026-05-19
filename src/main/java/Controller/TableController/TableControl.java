@@ -1,6 +1,5 @@
 package Controller.TableController;
 
-import Controller.ControllTableData.BooksTable;
 import View.Table.PopupMenuTable;
 import View.ViewWindow;
 
@@ -21,6 +20,12 @@ public class TableControl{
 
     private void initListeners(){
         view.getDataTable().getTable().getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                updateSelectedRowStatus();
+            }
+        });
+
+        view.getDataTable().getTable().getColumnModel().getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 updateSelectedRowStatus();
             }
@@ -53,14 +58,16 @@ public class TableControl{
     }
 
     private void updateSelectedRowStatus(){
-        int selectedRow = view.getDataTable().getTable().getSelectedRow() + 1;
-        int selectedColumn = view.getDataTable().getTable().getSelectedColumn() + 1;
+        int selectedRow =  view.getDataTable().getTable().getSelectedRow();
+        int selectedColumn =  view.getDataTable().getTable().getSelectedColumn();
 
-        if (selectedRow - 1 == -1) {
+        if (selectedRow == -1) {
             view.getStatusBar().getSelectedRowLabel().setText("");
-        }
-        else {
-            view.getStatusBar().getSelectedRowLabel().setText("Selected Row: " + selectedRow + "    " + "Selected column: " + selectedColumn);
+        } else {
+            int Row = selectedRow + 1;
+            int Column = selectedColumn + 1;
+
+            view.getStatusBar().getSelectedRowLabel().setText("Selected Row: " + Row + "    " + "Selected column: " + Column);
         }
     }
 

@@ -1,6 +1,5 @@
 package DAO;
 
-import Model.Entity.Book;
 import Model.Entity.Client;
 
 import java.sql.*;
@@ -82,7 +81,10 @@ public class ClientDAO {
                     );
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
